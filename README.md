@@ -1,6 +1,6 @@
 # ENCRYPTINATOR
 
-A simple bash script that can encrypt and decrypt messages between friends
+A simple bash script that can encrypt and decrypt messages between friends, or just encrypt messages for your own use later (e.g. passwords, etc). 
 
 ## Usage
 
@@ -41,6 +41,7 @@ Selection:
 ### Future plans
 
 - Create a more robust version with better security
+- Move from symmetric to asymmetric encryption tool
 - Expand capabilities
 - Create a snap that can be installed and updated easily
 - Kick it to the man
