@@ -58,14 +58,14 @@ clear
     case $ANSWER in
       1) read -p "Enter your message here:  " MESSAGE
          echo ""
-         echo "${MESSAGE}" | openssl enc -aes-256-cbc -a -pbkdf2 | tee /home/$USER/${TXT}
+         echo "${MESSAGE}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2  -iter 250000 -md sha512 | tee /home/$USER/${TXT}
          echo ""
          sleep .5
          echo ""
          ;;
       2) read -p "Enter the location and full name of your message to be decrypted here (e.g. /home/$USER/file.txt): " DECRYPT
          echo ""
-         cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -pbkdf2 | tee /home/$USER/${TXT2}
+         cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee /home/$USER/${TXT2}
          echo ""
          sleep .5
          echo ""
