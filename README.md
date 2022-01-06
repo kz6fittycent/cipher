@@ -4,9 +4,29 @@ A simple bash script that can encrypt and decrypt messages between friends
 
 ## Usage
 
+From your terminal, run the script: `./encryptinator`
+
+You'll be presented with a menu, as shown below:
+
+```
+---------------------------------
+
+               MENU
+
+---------------------------------
+
+
+Select from the following options: 
+
+1) Encrypt a message
+2) Decrypt a message
+3) Quit
+
+Selection: 
+```
+
 ### Encrypting a message
 
-- From your terminal, run the script: `./encryptinator`
 - Enter the message you want to encrypt, when prompted.
 - Enter the password you'd like to use, when prompted.
 - The script will create a new text file you can share with a friend. This text file has the encrypted message within.
@@ -14,7 +34,6 @@ A simple bash script that can encrypt and decrypt messages between friends
 
 ### Decrypting a message
 
-- From your terminal, run the script: `./encryptinator`
 - Enter the file location's full path that needs to be decrypted (e.g. `/home/$USER/file-to-be-decrypted.txt`).
 - Enter the password that was shared with you.
 - Laugh at the dumb message your friend decided to share.
