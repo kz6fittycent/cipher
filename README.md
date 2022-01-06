@@ -35,6 +35,8 @@ Selection:
 ### Decrypting a message
 
 - Enter the file location's full path that needs to be decrypted (e.g. `/home/$USER/file-to-be-decrypted.txt`).
+- Enter the location of the full name of your checksum to be validated here (e.g. `/home/$USER/file_sha256sum.txt`).
+- The script will verify the checksum, if provided. This may be bypassed with a warning. User input required to proceed.
 - Enter the password that was used to encrypt the file.
 - If you're decrypting a message from a friend, you'll need the password they used to create the file.
 
