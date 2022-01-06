@@ -1,0 +1,80 @@
+#!/bin/sh
+
+# VARS
+############################################
+DATE=$(date +%F_%R)
+TXT="CYPHER_MESSAGE_${DATE}.txt"
+TXT2="DECRYPTED_MESSAGE_${DATE}.txt"
+############################################
+
+clear
+
+echo ""
+echo "=========================================="
+echo ""
+echo "             ENCRYPTINATOR"
+echo ""
+echo "=========================================="
+sleep .5
+
+clear
+
+echo ""
+echo "                 NOTE:"
+echo ""
+echo "If you wish to share your message with"
+echo "others, you must share the encryption"
+echo "password with them, as well."
+echo ""
+echo "Make sure you commit your password to"
+echo "memory!"
+echo ""
+
+sleep 3
+
+clear
+
+while [ ANSWER != "0" ]  
+do 
+
+echo "---------------------------------"
+echo ""
+echo "               MENU"
+echo ""
+echo "---------------------------------"
+echo ""
+echo ""
+echo "Select from the following options: "
+echo ""
+
+echo "1) Encrypt a message"
+echo "2) Decrypt a message"
+echo "3) Quit"
+echo ""
+
+read -p "Selection: " ANSWER
+clear
+
+    case $ANSWER in
+      1) read -p "Enter your message here:  " MESSAGE
+         echo ""
+         echo "${MESSAGE}" | openssl enc -aes-256-cbc -a -pbkdf2 | tee /home/$USER/${TXT}
+         echo ""
+         sleep .5
+         echo ""
+         ;;
+      2) read -p "Enter the location and full name of your message to be decrypted here (e.g. /home/$USER/file.txt): " DECRYPT
+         echo ""
+         cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -pbkdf2 | tee /home/$USER/${TXT2}
+         echo ""
+         sleep .5
+         echo ""
+         ;;
+      3) break ;;
+    esac
+    echo ""
+    echo "Press RETURN for MENU"
+    echo ""
+    read key
+done
+exit 0
