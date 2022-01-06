@@ -1,37 +1,3 @@
-#!/bin/sh
-
-# VARS
-############################################
-DATE=$(date +%F_%R)
-TXT="CYPHER_MESSAGE_${DATE}.txt"
-TXT2="DECRYPTED_MESSAGE_${DATE}.txt"
-############################################
-
-clear
-
-echo ""
-echo "=========================================="
-echo ""
-echo "             ENCRYPTINATOR"
-echo ""
-echo "=========================================="
-sleep .5
-
-clear
-
-echo ""
-echo "                 NOTE:"
-echo ""
-echo "If you wish to share your message with"
-echo "others, you must share the encryption"
-echo "password with them, as well."
-echo ""
-echo "Make sure you commit your password to"
-echo "memory!"
-echo ""
-
-sleep 3
-
 clear
 
 while [ ANSWER != "0" ]  
@@ -58,18 +24,63 @@ clear
     case $ANSWER in
       1) read -p "Enter your message here:  " MESSAGE
          echo ""
-         echo "${MESSAGE}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2  -iter 250000 -md sha512 | tee /home/$USER/${TXT}
+         echo "${MESSAGE}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2  -iter 250000 -md sha512| tee /home/$USER/${TXT}
          echo ""
          sleep .5
          echo ""
+         echo "Creating checksum for ${TXT}..."
+         echo ""
+         sleep .5
+         
+         sha256sum ${TXT} | tee ${TXT}_sha256sum.txt
+         echo ""
+         sleep .5
          ;;
       2) read -p "Enter the location and full name of your message to be decrypted here (e.g. /home/$USER/file.txt): " DECRYPT
          echo ""
-         cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee /home/$USER/${TXT2}
-         echo ""
-         sleep .5
-         echo ""
+         read -p "Enter the location of the full name of your checksum to be validated here (e.g. /home/$USER/file_sha256sum.txt): " SUM
+         echo "" 
+                 
+         if [ $(sha256sum -c ${SUM} | awk '{print $2}') = 'OK' ]
+         
+         then
+         
+           echo ""
+           echo "Valid file!"
+           echo ""
+           sleep .5           
+           echo "Decrypting file now..."
+           echo ""
+           sleep .5
+           cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee /home/$USER/${TXT2} 
+                     
+         else   
+                
+           echo ""
+           echo "WARNING!! FILE CHECKSUM MISMATCH!! PROCEED WITH CAUTION!!"
+           echo ""
+           
+           while true
+           do
+           read -p "Would you like to proceed anyway? Y/N:  " PROCEED
+             case ${PROCEED} in
+               [Yy]* ) echo ""
+                       echo "Decrypting without validation now..."
+                       echo ""
+                       sleep .5               
+                       cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee /home/$USER/${TXT2} 
+               
+                       echo ""
+                       sleep .5 
+                       exit
+                       ;;               
+                [Nn]* ) exit;;
+                * ) echo "Please answer yes or no";;         
+             esac
+           done
+           fi
          ;;
+         
       3) break ;;
     esac
     echo ""
