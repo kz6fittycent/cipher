@@ -1,3 +1,37 @@
+#!/bin/sh
+
+# VARS
+############################################
+DATE=$(date +%F_%R)
+TXT="CYPHER_MESSAGE_${DATE}.txt"
+TXT2="DECRYPTED_MESSAGE_${DATE}.txt"
+############################################
+
+clear
+
+echo ""
+echo "=========================================="
+echo ""
+echo "             ENCRYPTINATOR"
+echo ""
+echo "=========================================="
+sleep .5
+
+clear
+
+echo ""
+echo "                 NOTE:"
+echo ""
+echo "If you wish to share your message with"
+echo "others, you must share the encryption"
+echo "password with them, as well."
+echo ""
+echo "Make sure you commit your password to"
+echo "memory!"
+echo ""
+
+sleep 3
+
 clear
 
 while [ ANSWER != "0" ]  
