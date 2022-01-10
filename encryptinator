@@ -3,9 +3,12 @@
 # VARS
 ############################################
 DATE=$(date +%F_%R)
-TXT="CYPHER_MESSAGE_${DATE}.txt"
-TXT2="DECRYPTED_MESSAGE_${DATE}.txt"
+DIR="/home/${USER}/encrypted_files"
+TXT="${DIR}/CYPHER_MESSAGE_${DATE}.txt"
+TXT2="${DIR}/DECRYPTED_MESSAGE_${DATE}.txt"
 ############################################
+
+mkdir -p ${DIR}
 
 clear
 
@@ -49,7 +52,8 @@ echo ""
 
 echo "1) Encrypt a message"
 echo "2) Decrypt a message"
-echo "3) Quit"
+echo "3) DELETE ALL FILES IN ${DIR}"
+echo "4) Quit"
 echo ""
 
 read -p "Selection: " ANSWER
@@ -58,7 +62,7 @@ clear
     case $ANSWER in
       1) read -p "Enter your message here:  " MESSAGE
          echo ""
-         echo "${MESSAGE}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2  -iter 250000 -md sha512| tee /home/$USER/${TXT}
+         echo "${MESSAGE}" | openssl enc -aes-256-cbc -a -A -salt -pbkdf2  -iter 250000 -md sha512| tee ${TXT}
          echo ""
          sleep .5
          echo ""
@@ -86,7 +90,7 @@ clear
            echo "Decrypting file now..."
            echo ""
            sleep .5
-           cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee /home/$USER/${TXT2} 
+           cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee ${TXT2} 
                      
          else   
                 
@@ -102,20 +106,48 @@ clear
                        echo "Decrypting without validation now..."
                        echo ""
                        sleep .5               
-                       cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee /home/$USER/${TXT2} 
+                       cat "${DECRYPT}" | openssl enc -aes-256-cbc -d -a -A -salt -pbkdf2 -iter 250000 -md sha512 | tee ${TXT2} 
                
                        echo ""
                        sleep .5 
                        exit
                        ;;               
                 [Nn]* ) exit;;
-                * ) echo "Please answer yes or no";;         
+                * ) echo "Please answer yes or no";;
              esac
            done
            fi
          ;;
          
-      3) break ;;
+      3) echo "WARNING!! THIS WILL DELETE ALL FILES FROM ${DIR}!"
+         echo ""
+         sleep .5
+         while true
+         do
+         read -p "Are you sure? Y/N:  " KILL
+           case ${KILL} in
+
+             [Yy]* ) echo ""
+                     echo "DELETING ALL FILES FROM ${DIR} NOW..."
+                     echo ""
+                     sleep .5
+                     rm -rf ${DIR}/*
+                     exit
+                     ;;
+
+             [Nn]* ) echo ""
+                     echo "Exiting and no files will be deleted..."
+                     echo ""
+                     sleep .5
+                     exit 
+                     ;;
+
+                 * ) echo ""
+                     echo "Please answer yes or no";;
+           esac
+         done
+         ;;
+      4) break ;;
     esac
     echo ""
     echo "Press RETURN for MENU"
